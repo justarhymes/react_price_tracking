@@ -39,15 +39,15 @@ export default (state = INITIAL_STATE, action) => {
         faveIDs: action.payload || []
       };
     case prices.favorite:
-      const { faves } = state;
-      if (faves.includes(action.payload)) {
-        faves.splice(action.payload, 1);
+      const { faveIDs } = state;
+      if (faveIDs.includes(action.payload)) {
+        faveIDs.splice(action.payload, 1);
       } else {
-        faves.push(action.payload);
+        faveIDs.push(action.payload);
       }
       return {
         ...state,
-        faves
+        faveIDs
       };
     default:
       return state;

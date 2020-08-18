@@ -16,25 +16,11 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import RemoveIcon from "@material-ui/icons/Remove";
 
-//actions
-import { favePrice } from "../../actions/priceActions";
-
 //hooks
 import { useCookies } from "react-cookie";
 
-const Item = ({ price, favorites }) => {
-  const [cookies, setCookies] = useCookies(["oldPrices", "favorites"]);
-
-  const addFave = id => {
-    const { favorites } = cookies;
-    if (favorites.includes(id)) {
-      favorites.splice(id, 1);
-    } else {
-      favorites.push(id);
-    }
-    setCookies("favorites", favorites);
-    favePrice(id);
-  };
+const Item = ({ price, faves, setFave }) => {
+  const [cookies] = useCookies(["oldPrices", "favorites"]);
 
   const renderIcon = () => {
     const storedPrice = cookies?.oldPrices?.[price.id];
@@ -50,11 +36,14 @@ const Item = ({ price, favorites }) => {
     return `${price.name} ${formatMoney(price.price)}`;
   };
 
+  console.log("price   ", price);
+  console.log("faves   ", faves);
+
   return (
     <ListItem className="price">
       <ListItemIcon>
-        <IconButton onClick={() => addFave(price.id)}>
-          {favorites?.[price.id] ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        <IconButton onClick={() => setFave(price.id)}>
+          {faves?.[price.id] ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
       </ListItemIcon>
       <ListItemText primary={renderText()} />

@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import List from "@material-ui/core/List";
 
 // actions
-import { getPrices, getFaves } from "../../actions/priceActions";
+import { getPrices, getFaves, favePrice } from "../../actions/priceActions";
 
 // hooks
 import { useCookies } from "react-cookie";
@@ -34,17 +34,27 @@ const Sidebar = () => {
     }
   }, 5000);
 
-  console.log(faves);
+  const setFave = id => {
+    const { favorites } = cookies;
+    if (favorites.includes(id)) {
+      favorites.splice(id, 1);
+    } else {
+      favorites.push(id);
+    }
+    setCookie("favorites", favorites);
+    favePrice(id);
+  };
 
   return (
     <List>
-      {_.size(faves) ? <Faves faves={faves} /> : ""}
+      {_.size(faves) ? <Faves faves={faves} setFave={setFave} /> : ""}
       {_.size(prices) ? (
         <>
           {_.map(prices, price => (
             <Item
               key={`${price.name}_${price.id}`}
               price={price}
+              setFave={setFave}
               faves={faves}
             />
           ))}

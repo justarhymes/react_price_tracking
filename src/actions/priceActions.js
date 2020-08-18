@@ -20,7 +20,8 @@ export const getPrices = () => async dispatch => {
 };
 
 export const getFaves = faves => async dispatch => {
-  dispatch(setPrices(faves, prices.faves));
+  await dispatch(setPrices(faves, prices.faves));
+  dispatch(getPrices());
 };
 
 export const favePrice = id => async dispatch => {

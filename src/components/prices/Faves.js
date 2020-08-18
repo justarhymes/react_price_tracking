@@ -8,12 +8,17 @@ import Divider from "@material-ui/core/Divider";
 //components
 import Item from "./Item";
 
-const Faves = ({ faves }) => {
+const Faves = ({ faves, setFave }) => {
   return (
     <>
       {_.map(faves, fave => {
         return (
-          <Item key={`${fave.name}_${fave.id}`} price={fave} faves={fave} />
+          <Item
+            key={`${fave.name}_${fave.id}`}
+            price={fave}
+            faves={faves}
+            setFave={setFave}
+          />
         );
       })}
 
