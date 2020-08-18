@@ -3,6 +3,8 @@ import { prices } from "../actions/types";
 
 const INITIAL_STATE = {
   collection: {},
+  faveIDs: null,
+  faves: null,
   loading: false
 };
 
@@ -14,9 +16,38 @@ export default (state = INITIAL_STATE, action) => {
         loading: action.payload
       };
     case prices.fetch:
+      const fetchNorm =
+        action.payload.filter(item => !state.faveIDs.includes(item.id)) || [];
+      const fetchFaves =
+        action.payload.filter(item => state.faveIDs.includes(item.id)) || [];
+      const resNorm = fetchNorm.map(item => {
+        item.price = Math.abs(item.price);
+        return item;
+      });
+      const resFaves = fetchFaves.map(item => {
+        item.price = Math.abs(item.price);
+        return item;
+      });
       return {
         ...state,
-        collection: _.mapKeys(action.payload, "id")
+        collection: resNorm ? _.mapKeys(resNorm, "id") : {},
+        faves: resFaves ? _.mapKeys(resFaves, "id") : {}
+      };
+    case prices.faves:
+      return {
+        ...state,
+        faveIDs: action.payload || []
+      };
+    case prices.favorite:
+      const { faves } = state;
+      if (faves.includes(action.payload)) {
+        faves.splice(action.payload, 1);
+      } else {
+        faves.push(action.payload);
+      }
+      return {
+        ...state,
+        faves
       };
     default:
       return state;

@@ -18,3 +18,12 @@ export const getPrices = () => async dispatch => {
   dispatch(setPrices(res.data, prices.fetch));
   dispatch(setPrices(false, prices.loading));
 };
+
+export const getFaves = faves => async dispatch => {
+  dispatch(setPrices(faves, prices.faves));
+};
+
+export const favePrice = id => async dispatch => {
+  dispatch(setPrices(id, prices.favorite));
+  dispatch(getPrices());
+};
